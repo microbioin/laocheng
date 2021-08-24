@@ -1,0 +1,10 @@
+library(org.Hs.eg.db)
+library(stringr)
+library(ggplot2)
+library(clusterProfiler)
+
+library(enrichplot)
+geneList <- read.table("genelist.txt", header=TRUE)
+geneID <- bitr(as.character(geneList$gene_name),fromType="SYMBOL",toType="ENTREZID",OrgDb=org.Hs.eg.db)
+enrichBP <- enrichGO(geneID$ENTREZID,OrgDb="org.Hs.eg.db",ont="BP",pvalueCutoff =1, qvalueCutoff = 1, minGSSize = 10, maxGSSize = 500, readable = TRUE )
+write.table(file="BP.genelist.txt", enrichBP, sep="\t", row.names = FALSE, quote = FALSE)
